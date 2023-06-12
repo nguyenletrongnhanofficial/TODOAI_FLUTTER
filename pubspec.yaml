@@ -9,11 +9,41 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.0.15
+  provider: ^6.0.5
+  intl:
+  flutter_localizations:
+    sdk: flutter
+  connectivity_plus: ^4.0.1
+  dio: ^5.2.1
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  build_runner: ^2.3.2
+  hive_generator: ^2.0.0
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/avatars/
+    - assets/backgrounds/
+    - assets/icons/
+    - assets/images/
+
+  fonts:
+    - family: TodoAi-Bold
+      fonts:
+        - asset: assets/fonts/TodoAi-Bold.ttf
+
+    - family: TodoAi-Book
+      fonts:
+        - asset: assets/fonts/TodoAi-Book.ttf
+
+    - family: TodoAi-Medium
+      fonts:
+        - asset: assets/fonts/TodoAi-Medium.ttf
