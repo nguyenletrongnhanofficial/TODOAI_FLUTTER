@@ -4,13 +4,15 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todoai_flutter/models/task.dart';
+import 'package:todoai_flutter/models/hives/task.dart';
+import 'package:todoai_flutter/modules/tasks/add_task.dart';
+
 import 'package:todoai_flutter/pages/home/components/list_item_widget.dart';
 import 'package:todoai_flutter/providers/task_provider.dart';
 
-import 'components/add_task.dart';
+
 import 'components/calendar.dart';
-import 'components/circle_progress/circle_progress.dart';
+import '../../modules/circle_progress/circle_progress.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart' as path;
-import 'package:todoai_flutter/pages/home/home_screen.dart';
+
 import 'package:todoai_flutter/pages/login_page.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,8 +12,9 @@ import 'package:todoai_flutter/providers/task_provider.dart';
 
 //Region Hive
 import 'models/hives/count_app.dart';
+import 'models/hives/task.dart';
 import 'models/hives/userid.dart';
-import 'package:todoai_flutter/models/task.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

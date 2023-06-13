@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todoai_flutter/config/config.dart';
-import 'package:todoai_flutter/models/task.dart';
+import 'package:todoai_flutter/models/hives/task.dart';
+
 import 'package:todoai_flutter/providers/task_provider.dart';
 
 class AddTaskClassic extends StatefulWidget {

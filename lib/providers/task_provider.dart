@@ -1,11 +1,12 @@
-import 'dart:convert';
+
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoai_flutter/config/config.dart';
-import 'package:todoai_flutter/models/task.dart';
+import 'package:todoai_flutter/models/hives/task.dart';
+
 
 class TaskProvider extends ChangeNotifier {
   static const String _boxName = "taskBox";
@@ -18,6 +19,8 @@ class TaskProvider extends ChangeNotifier {
 
   getAllTaskLocal() async {
     var box = await Hive.openBox<Task>(_boxName);
+
+  
 
     _tasks = box.values.toList();
 
