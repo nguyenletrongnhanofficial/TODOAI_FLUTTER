@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todoai_flutter/models/task.dart';
-import 'package:todoai_flutter/pages/home/components/update_delete_task.dart';
+import 'package:todoai_flutter/models/hives/task.dart';
+import 'package:todoai_flutter/modules/tasks/update_delete_task.dart';
+
 import 'package:todoai_flutter/providers/task_provider.dart';
 
 class ListItemWidget extends StatelessWidget {

@@ -1,11 +1,12 @@
-import 'dart:convert';
+
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoai_flutter/config/config.dart';
-import 'package:todoai_flutter/models/task.dart';
+import 'package:todoai_flutter/models/hives/task.dart';
+
 
 class TaskProvider extends ChangeNotifier {
   static const String _boxName = "taskBox";
@@ -16,8 +17,10 @@ class TaskProvider extends ChangeNotifier {
 
   var isConnected = false;
 
-  getAllTask() async {
+  getAllTaskLocal() async {
     var box = await Hive.openBox<Task>(_boxName);
+
+  
 
     _tasks = box.values.toList();
 
@@ -38,27 +41,27 @@ class TaskProvider extends ChangeNotifier {
       var taskServer = data["message"]["tasks"];
 
       for (int i = 0; i < taskServer.length; i++) {
-        addTask(Task.toTask(taskServer[i] as Map<String, dynamic>));
+        addTaskLocal(Task.toTask(taskServer[i] as Map<String, dynamic>));
       }
     }
 
     notifyListeners();
   }
 
-  Future<void> addTask(Task task) async {
+  Future<void> addTaskLocal(Task task) async {
     var box = await Hive.openBox<Task>(_boxName);
     await box.add(task);
     notifyListeners();
   }
 
-  Future<void> deleteTask(int index) async {
+  Future<void> deleteTaskLocal(int index) async {
     var box = await Hive.openBox<Task>(_boxName);
     box.deleteAt(index);
 
     notifyListeners();
   }
 
-  Future<void> updateTask(Task task, int index) async {
+  Future<void> updateTaskLocal(Task task, int index) async {
     var box = await Hive.openBox<Task>(_boxName);
     box.putAt(index, task);
     notifyListeners();
@@ -87,13 +90,13 @@ class TaskProvider extends ChangeNotifier {
     await checkInterner();
     if (isConnected == true) {
       if (task.id == null) {
-        deleteTask(index);
+        deleteTaskLocal(index);
       } else {
         var response =
             await Dio().delete("$baseUrl/task/deleteTask/${task.id}");
         if (response.statusCode == 200) {
-          await deleteTask(index);
-          getAllTask();
+          await deleteTaskLocal(index);
+          getAllTaskLocal();
           print('delete succes local and server');
         }
       }
@@ -112,11 +115,13 @@ class TaskProvider extends ChangeNotifier {
           "color": task.color,
           "describe": task.describe,
           "time": task.time,
+          "isComplete": task.isComplete
         });
         print(response.statusCode);
         if (response.statusCode == 200) {
-          await updateTask(
+          await updateTaskLocal(
               Task(
+                  id: task.id,
                   date: task.date,
                   title: task.title,
                   isComplete: task.isComplete,
@@ -127,11 +132,12 @@ class TaskProvider extends ChangeNotifier {
                   isUpdate: false,
                   isDelete: task.isDelete),
               index);
-          getAllTask();
+          getAllTaskLocal();
           print('update succes local and server');
         }
       } catch (e) {
-        deleteTask(index);
+        print(e);
+        deleteTaskLocal(index);
       }
     }
     notifyListeners();
