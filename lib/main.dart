@@ -2,22 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path;
-import 'package:todoai_flutter/models/task.dart';
 import 'package:todoai_flutter/pages/home/home_screen.dart';
-import 'package:todoai_flutter/providers/task_provider.dart';
+import 'package:todoai_flutter/pages/login_page.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+//Region Provider
+import '/providers/pages/message_page_provider.dart';
+import 'package:todoai_flutter/providers/task_provider.dart';
+
+//Region Hive
+import 'models/hives/count_app.dart';
+import 'models/hives/userid.dart';
+import 'package:todoai_flutter/models/task.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final dir = await path.getApplicationDocumentsDirectory();
-  Hive.init(dir.path);
-
-  Hive.registerAdapter<Task>(TaskAdapter());
+  //hive
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserIdAdapter());
+  await Hive.openBox<UserId>('userBox');
+  Hive.registerAdapter(CountAppAdapter());
+  await Hive.openBox<CountApp>('countBox');
+  Hive.registerAdapter(TaskAdapter());
   await Hive.openBox<Task>('taskBox');
+  //====
 
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider.value(value: TaskProvider())],
+    providers: [
+      ChangeNotifierProvider.value(value: TaskProvider()),
+      ChangeNotifierProvider.value(value: MessagePageProvider())
+    ],
     child: const MainApp(),
   ));
 }
@@ -27,8 +43,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-       theme: ThemeData(
+    return MaterialApp(
+      theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFEEF1F8),
         primarySwatch: Colors.blue,
         fontFamily: "TodoAi-Bold",
@@ -43,10 +59,9 @@ class MainApp extends StatelessWidget {
         ),
       ),
       localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,     
+        GlobalMaterialLocalizations.delegate,
       ],
-  
-      home: const HomePage(),
+      home: const Login(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -59,4 +74,3 @@ const defaultInputBorder = OutlineInputBorder(
     width: 1,
   ),
 );
-
