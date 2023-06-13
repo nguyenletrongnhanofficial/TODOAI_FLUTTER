@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 part 'task.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 2)
 class Task {
   @HiveField(0)
   final String? id;
@@ -45,18 +45,17 @@ class Task {
       required this.isUpdate,
       required this.isDelete});
 
-static toTask(Map<String, dynamic> data) {
+  static toTask(Map<String, dynamic> data) {
     return Task(
-      id: data["_id"] ?? "",
-      date: data["date"] ?? "",
-      title: data["title"] ?? "",
-      isComplete: data["isComplete"] ?? "",
-      describe: data["describe"] ?? "",
-      time: data["time"] ?? "",
-      color: data["color"] != null ? int.parse(data["color"]) : 0,
-      isAdd: false,
-      isDelete: false,
-      isUpdate: false
-    );
-  }    
+        id: data["_id"] ?? "",
+        date: data["date"] ?? "",
+        title: data["title"] ?? "",
+        isComplete: data["isComplete"] ?? "",
+        describe: data["describe"] ?? "",
+        time: data["time"] ?? "",
+        color: data["color"] != null ? int.parse(data["color"]) : 0,
+        isAdd: false,
+        isDelete: false,
+        isUpdate: false);
+  }
 }
