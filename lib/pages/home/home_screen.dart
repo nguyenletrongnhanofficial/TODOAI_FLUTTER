@@ -23,16 +23,17 @@ class _HomePageState extends State<HomePage> {
   late ConnectivityResult result;
   late StreamSubscription subscription;
 
-var isConnected = false;
+  var isConnected = false;
 
   checkInternet() async {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     result = await Connectivity().checkConnectivity();
     if (result != ConnectivityResult.none) {
-   
       await syncTaskServer();
     }
-    taskProvider.getTaskServer().whenComplete(() => taskProvider.getAllTask());
+    taskProvider
+        .getTaskServer()
+        .whenComplete(() => taskProvider.getAllTaskLocal());
     setState(() {});
   }
 
@@ -62,7 +63,6 @@ var isConnected = false;
         }
       }
     });
-
   }
 
   DateTime _selectedDateTime = DateTime.now();
@@ -87,7 +87,7 @@ var isConnected = false;
     super.initState();
     // Gọi requestFocus() khi widget được xây dựng
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TaskProvider>(context, listen: false).getAllTask();
+      Provider.of<TaskProvider>(context, listen: false).getAllTaskLocal();
       startStreaming();
     });
   }
@@ -114,7 +114,6 @@ var isConnected = false;
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                         
                           Text(
                             'Xin chào 👋',
                             style: TextStyle(
@@ -215,7 +214,23 @@ var isConnected = false;
                             index: index,
                             task: task,
                             onClicked: () async {
-                              await taskProvider.updateTask(
+                              await taskProvider
+                                  .updateTaskLocal(
+                                      Task(
+                                          id: task.id,
+                                          date: task.date,
+                                          title: task.title,
+                                          isComplete: true,
+                                          describe: task.describe,
+                                          time: task.time,
+                                          color: task.color,
+                                          isAdd: task.isAdd,
+                                          isUpdate: true,
+                                          isDelete: task.isDelete),
+                                      index)
+                                  .whenComplete(
+                                      () => taskProvider.getAllTaskLocal());
+                              taskProvider.updateTaskServer(
                                   Task(
                                       id: task.id,
                                       date: task.date,
@@ -225,10 +240,12 @@ var isConnected = false;
                                       time: task.time,
                                       color: task.color,
                                       isAdd: task.isAdd,
-                                      isUpdate: task.isUpdate,
+                                      isUpdate: true,
                                       isDelete: task.isDelete),
                                   index);
-                              taskProvider.getAllTask();
+                                  setState(() {
+                                    
+                                  });
                             });
                       } else {
                         return const SizedBox.shrink();
@@ -249,7 +266,23 @@ var isConnected = false;
                           index: index,
                           task: task,
                           onClicked: () async {
-                            await taskProvider.updateTask(
+                            await taskProvider
+                                .updateTaskLocal(
+                                    Task(
+                                        id: task.id,
+                                        date: task.date,
+                                        title: task.title,
+                                        isComplete: false,
+                                        describe: task.describe,
+                                        time: task.time,
+                                        color: task.color,
+                                        isAdd: task.isAdd,
+                                        isUpdate: true,
+                                        isDelete: task.isDelete),
+                                    index)
+                                .whenComplete(
+                                    () => taskProvider.getAllTaskLocal());
+                            taskProvider.updateTaskServer(
                                 Task(
                                     id: task.id,
                                     date: task.date,
@@ -259,10 +292,12 @@ var isConnected = false;
                                     time: task.time,
                                     color: task.color,
                                     isAdd: task.isAdd,
-                                    isUpdate: task.isUpdate,
+                                    isUpdate: true,
                                     isDelete: task.isDelete),
                                 index);
-                            taskProvider.getAllTask();
+                                setState(() {
+                                  
+                                });
                           });
                     } else {
                       return const SizedBox.shrink();

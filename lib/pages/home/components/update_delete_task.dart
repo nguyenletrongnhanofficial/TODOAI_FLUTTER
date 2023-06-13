@@ -38,14 +38,14 @@ class _UpdateDeleteTaskState extends State<UpdateDeleteTask> {
     super.didChangeDependencies();
   }
 
-  Future<void> updateTask(
+  Future<void> updateTaskLocal(
       int index, TaskProvider taskProvider, Task task) async {
     try {
       String date = DateFormat('dd/MM/yyyy')
           .format(DateFormat('dd/MM/yyyy').parse(dateEditingController.text));
 
       taskProvider
-          .updateTask(
+          .updateTaskLocal(
               Task(
                   id: task.id,
                   date: date,
@@ -59,7 +59,7 @@ class _UpdateDeleteTaskState extends State<UpdateDeleteTask> {
                   isDelete: task.isDelete),
               index)
           .whenComplete(() {
-        taskProvider.getAllTask();
+        taskProvider.getAllTaskLocal();
         Navigator.pop(context);
       });
     } catch (e) {
@@ -72,31 +72,30 @@ class _UpdateDeleteTaskState extends State<UpdateDeleteTask> {
     try {
       String date = DateFormat('dd/MM/yyyy')
           .format(DateFormat('dd/MM/yyyy').parse(dateEditingController.text));
-      taskProvider
-          .updateTaskServer(
-              Task(
-                  id: task.id,
-                  date: date,
-                  title: titleEditingController.text,
-                  isComplete: task.isComplete,
-                  describe: describeEditingController.text,
-                  time: timeEditingController.text,
-                  color: selectColor,
-                  isAdd: task.isAdd,
-                  isUpdate: true,
-                  isDelete: task.isDelete),
-              index)
-          .whenComplete(() => taskProvider.getAllTask());
+      taskProvider.updateTaskServer(
+          Task(
+              id: task.id,
+              date: date,
+              title: titleEditingController.text,
+              isComplete: task.isComplete,
+              describe: describeEditingController.text,
+              time: timeEditingController.text,
+              color: selectColor,
+              isAdd: task.isAdd,
+              isUpdate: true,
+              isDelete: task.isDelete),
+          index)
+      .whenComplete(() => taskProvider.getAllTaskLocal());
     } catch (e) {
       print(e);
     }
   }
 
-  Future<void> deleteTask(
+  Future<void> deleteTaskLocal(
       int index, TaskProvider taskProvider, Task task) async {
     try {
       taskProvider
-          .updateTask(
+          .updateTaskLocal(
               Task(
                   date: task.date,
                   title: task.title,
@@ -109,7 +108,7 @@ class _UpdateDeleteTaskState extends State<UpdateDeleteTask> {
                   isDelete: true),
               index)
           .whenComplete(() {
-        taskProvider.getAllTask();
+        taskProvider.getAllTaskLocal();
         Navigator.pop(context);
       });
     } catch (e) {
@@ -122,7 +121,7 @@ class _UpdateDeleteTaskState extends State<UpdateDeleteTask> {
     try {
       taskProvider
           .deleteTaskServer(task, index)
-          .whenComplete(() => taskProvider.getAllTask());
+          .whenComplete(() => taskProvider.getAllTaskLocal());
     } catch (e) {
       print(e);
     }
@@ -407,7 +406,7 @@ class _UpdateDeleteTaskState extends State<UpdateDeleteTask> {
                       children: [
                         ElevatedButton(
                             onPressed: () async {
-                              await deleteTask(
+                              await deleteTaskLocal(
                                   widget.index, taskProvider, widget.task);
                               deleteTaskServer(
                                   widget.index, taskProvider, widget.task);
@@ -436,7 +435,7 @@ class _UpdateDeleteTaskState extends State<UpdateDeleteTask> {
                             )),
                         ElevatedButton(
                             onPressed: () async {
-                              await updateTask(
+                              await updateTaskLocal(
                                   widget.index, taskProvider, widget.task);
                               updateTaskServer(
                                   widget.index, taskProvider, widget.task);
