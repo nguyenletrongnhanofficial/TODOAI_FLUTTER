@@ -1,35 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'count_app.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserAdapter extends TypeAdapter<User> {
+class CountAppAdapter extends TypeAdapter<CountApp> {
   @override
-  final int typeId = 3;
+  final int typeId = 1;
 
   @override
-  User read(BinaryReader reader) {
+  CountApp read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return User(
-      fields[0] == null ? 'none' : fields[0] as String,
-      fields[1] == null ? 'Homie' : fields[1] as String,
+    return CountApp(
+      countShowcase: fields[0] as int?,
+      countOnboarding: fields[1] as bool?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, User obj) {
+  void write(BinaryWriter writer, CountApp obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.id)
+      ..write(obj.countShowcase)
       ..writeByte(1)
-      ..write(obj.name);
+      ..write(obj.countOnboarding);
   }
 
   @override
@@ -38,7 +38,7 @@ class UserAdapter extends TypeAdapter<User> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserAdapter &&
+      other is CountAppAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
