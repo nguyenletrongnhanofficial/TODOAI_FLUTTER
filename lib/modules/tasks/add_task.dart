@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todoai_flutter/config/config.dart';
-import 'package:todoai_flutter/models/task.dart';
+import 'package:todoai_flutter/models/hives/task.dart';
+
 import 'package:todoai_flutter/providers/task_provider.dart';
+
+import 'add_task_classic.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
@@ -42,7 +45,7 @@ class _AddTaskState extends State<AddTask> {
     super.didChangeDependencies();
   }
 
-  Future<void> postTask(TaskProvider taskProvider) async {
+  Future<void> postTaskLocal(TaskProvider taskProvider) async {
     try {
       RegExp timePattern = RegExp(r'\/(\d{1,2}:\d{2})?');
       RegExp datePattern = RegExp(r'(\d{1,2}\.\d{1,2}\.\d{4})');
@@ -68,7 +71,7 @@ class _AddTaskState extends State<AddTask> {
           .format(DateFormat('dd.MM.yyyy').parse(dateInput));
 
       taskProvider
-          .addTask(Task(           
+          .addTaskLocal(Task(           
               date: date,
               title: title,
               isComplete: false,
@@ -79,7 +82,7 @@ class _AddTaskState extends State<AddTask> {
               isUpdate: false,
               isDelete: false))
           .whenComplete(() {
-        taskProvider.getAllTask();
+        taskProvider.getAllTaskLocal();
         Navigator.pop(context);
       });
     } catch (e) {
@@ -127,7 +130,7 @@ class _AddTaskState extends State<AddTask> {
         var taskId = data["message"];
 
         taskProvider
-            .updateTask(
+            .updateTaskLocal(
                 Task(
                     id: taskId,
                     date: date,
@@ -140,7 +143,7 @@ class _AddTaskState extends State<AddTask> {
                     isUpdate: false,
                     isDelete: false),
                 lenght)
-            .whenComplete(() => taskProvider.getAllTask());
+            .whenComplete(() => taskProvider.getAllTaskLocal());
       }
     } else {
       print('false');
@@ -315,8 +318,8 @@ class _AddTaskState extends State<AddTask> {
                         transitionDuration: const Duration(milliseconds: 400),
                         context: context,
                         pageBuilder: (_, __, ___) {
-                          return Container();
-                          // return AddTaskClassic();
+                        
+                          return const AddTaskClassic();
                         },
                         transitionBuilder: (_, anim, __, child) {
                           Tween<Offset> tween;
@@ -378,7 +381,7 @@ class _AddTaskState extends State<AddTask> {
                         IconButton(
                           iconSize: 35,
                           onPressed: () async{
-                            await postTask(taskProvider);
+                            await postTaskLocal(taskProvider);
                             postTaskServer(taskProvider, taskData.tasks.length);
                           },
                           icon: Image.asset('assets/icons/done_icon.gif'),

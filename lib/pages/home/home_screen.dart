@@ -4,13 +4,15 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todoai_flutter/models/task.dart';
+import 'package:todoai_flutter/models/hives/task.dart';
+import 'package:todoai_flutter/modules/tasks/add_task.dart';
+
 import 'package:todoai_flutter/pages/home/components/list_item_widget.dart';
 import 'package:todoai_flutter/providers/task_provider.dart';
 
-import 'components/add_task.dart';
+
 import 'components/calendar.dart';
-import 'components/circle_progress/circle_progress.dart';
+import '../../modules/circle_progress/circle_progress.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,16 +25,17 @@ class _HomePageState extends State<HomePage> {
   late ConnectivityResult result;
   late StreamSubscription subscription;
 
-var isConnected = false;
+  var isConnected = false;
 
   checkInternet() async {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     result = await Connectivity().checkConnectivity();
     if (result != ConnectivityResult.none) {
-   
       await syncTaskServer();
     }
-    taskProvider.getTaskServer().whenComplete(() => taskProvider.getAllTask());
+    taskProvider
+        .getTaskServer()
+        .whenComplete(() => taskProvider.getAllTaskLocal());
     setState(() {});
   }
 
@@ -62,7 +65,6 @@ var isConnected = false;
         }
       }
     });
-
   }
 
   DateTime _selectedDateTime = DateTime.now();
@@ -87,7 +89,7 @@ var isConnected = false;
     super.initState();
     // Gọi requestFocus() khi widget được xây dựng
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TaskProvider>(context, listen: false).getAllTask();
+      Provider.of<TaskProvider>(context, listen: false).getAllTaskLocal();
       startStreaming();
     });
   }
@@ -114,7 +116,6 @@ var isConnected = false;
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                         
                           Text(
                             'Xin chào 👋',
                             style: TextStyle(
@@ -215,7 +216,23 @@ var isConnected = false;
                             index: index,
                             task: task,
                             onClicked: () async {
-                              await taskProvider.updateTask(
+                              await taskProvider
+                                  .updateTaskLocal(
+                                      Task(
+                                          id: task.id,
+                                          date: task.date,
+                                          title: task.title,
+                                          isComplete: true,
+                                          describe: task.describe,
+                                          time: task.time,
+                                          color: task.color,
+                                          isAdd: task.isAdd,
+                                          isUpdate: true,
+                                          isDelete: task.isDelete),
+                                      index)
+                                  .whenComplete(
+                                      () => taskProvider.getAllTaskLocal());
+                              taskProvider.updateTaskServer(
                                   Task(
                                       id: task.id,
                                       date: task.date,
@@ -225,10 +242,12 @@ var isConnected = false;
                                       time: task.time,
                                       color: task.color,
                                       isAdd: task.isAdd,
-                                      isUpdate: task.isUpdate,
+                                      isUpdate: true,
                                       isDelete: task.isDelete),
                                   index);
-                              taskProvider.getAllTask();
+                                  setState(() {
+                                    
+                                  });
                             });
                       } else {
                         return const SizedBox.shrink();
@@ -249,7 +268,23 @@ var isConnected = false;
                           index: index,
                           task: task,
                           onClicked: () async {
-                            await taskProvider.updateTask(
+                            await taskProvider
+                                .updateTaskLocal(
+                                    Task(
+                                        id: task.id,
+                                        date: task.date,
+                                        title: task.title,
+                                        isComplete: false,
+                                        describe: task.describe,
+                                        time: task.time,
+                                        color: task.color,
+                                        isAdd: task.isAdd,
+                                        isUpdate: true,
+                                        isDelete: task.isDelete),
+                                    index)
+                                .whenComplete(
+                                    () => taskProvider.getAllTaskLocal());
+                            taskProvider.updateTaskServer(
                                 Task(
                                     id: task.id,
                                     date: task.date,
@@ -259,10 +294,12 @@ var isConnected = false;
                                     time: task.time,
                                     color: task.color,
                                     isAdd: task.isAdd,
-                                    isUpdate: task.isUpdate,
+                                    isUpdate: true,
                                     isDelete: task.isDelete),
                                 index);
-                            taskProvider.getAllTask();
+                                setState(() {
+                                  
+                                });
                           });
                     } else {
                       return const SizedBox.shrink();

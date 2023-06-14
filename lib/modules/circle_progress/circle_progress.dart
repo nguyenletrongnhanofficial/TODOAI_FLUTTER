@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todoai_flutter/models/task.dart';
+
 import 'package:todoai_flutter/models/date_model.dart' as date_util;
-import 'package:todoai_flutter/pages/home/components/circle_progress/circular_percent_indicator.dart';
+import 'package:todoai_flutter/models/hives/task.dart';
+import 'package:todoai_flutter/modules/circle_progress/circular_percent_indicator.dart';
 
 class CircleProgress extends StatefulWidget {
   final List<Task> tasks;
