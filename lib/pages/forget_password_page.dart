@@ -124,8 +124,8 @@ class _Forget_passState extends State<Forget_pass>
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => VerifyPage(
-                                        phoneNumber: phoneInputField.text,
+                                  builder: (context) => Verify_Page(
+                                      // phoneNumber: phoneInputField.text,
                                       )),
                             );
                           }
