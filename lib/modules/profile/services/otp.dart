@@ -15,10 +15,7 @@ class OTPService {
         print('OTP sent');
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => VerifyPage(
-                    phoneNumber: phoneNumber,
-                  )),
+          MaterialPageRoute(builder: (context) => Verify_Page()),
         );
       } else {
         print('Failed to send OTP');
@@ -31,8 +28,6 @@ class OTPService {
 //Xác thực OTP
   Future<bool> verifyOTP(String phoneNumber, String otp) async {
     try {
-      print(phoneNumber);
-      print(otp);
       final response = await Dio().post(
         '$baseUrl/api/otp/verifyOtp',
         data: {'phoneNumber': phoneNumber, 'otp': otp},

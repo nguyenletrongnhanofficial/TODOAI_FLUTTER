@@ -111,7 +111,7 @@ class _SignUpState extends State<SignUp> {
                     //     },
                     //     icon: Icon(Icons.arrow_back_ios)),
                     const Text(
-                      'LOVISER',
+                      'TodoAi',
                       style: TextStyle(
                           color: Color(0xFF356899),
                           fontSize: 22,
@@ -158,7 +158,7 @@ class _SignUpState extends State<SignUp> {
                               height: mediaHeight * 0.06,
                               width: MediaQuery.of(context).size.width * 0.6,
                               child: const Text(
-                                'Loviser nền tảng việc làm tự do về tình cảm đầu tiên tại Việt Nam',
+                                'TodoAi là ứng dụng sắp xếp lịch bằng trí tuệ nhân tạo đầu tiên tại Việt Nam',
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 14,
