@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
 import '/pages/forget_password_page.dart';
-import '/pages/home/home_screen.dart';
+import 'home/home_page.dart';
 import '/pages/onboarding.dart';
 import '/pages/sign_up_page.dart';
 
@@ -130,7 +130,10 @@ class _LoginState extends State<Login> {
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            MaterialPageRoute(
+                builder: (context) => const HomePage(
+                      isMe: true,
+                    )),
           );
         } else {
           showDialog(

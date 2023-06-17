@@ -9,39 +9,51 @@ import 'package:todoai_flutter/modules/tasks/add_task.dart';
 
 import 'package:todoai_flutter/pages/home/components/list_item_widget.dart';
 import 'package:todoai_flutter/providers/task_provider.dart';
-
-
+import '/widgets/navigation_drawer_profile.dart';
+import '../../providers/card_profile_provider.dart';
+import '../../providers/pages/message_page_provider.dart';
 import 'components/calendar.dart';
 import '../../modules/circle_progress/circle_progress.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final bool isMe;
+  const HomePage({super.key, required this.isMe});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
+class CurrentUser {
+  static final CurrentUser _instance = CurrentUser._internal();
+  factory CurrentUser() => _instance;
+  CurrentUser._internal();
+
+  late String current_user_id;
+}
+
 class _HomePageState extends State<HomePage> {
   late ConnectivityResult result;
   late StreamSubscription subscription;
+  late String current_user_id;
+  final CurrentUser _currentUser = CurrentUser();
 
   var isConnected = false;
-
-  checkInternet() async {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  checkInternet(String userId) async {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     result = await Connectivity().checkConnectivity();
     if (result != ConnectivityResult.none) {
       await syncTaskServer();
     }
     taskProvider
-        .getTaskServer()
+        .getTaskServer(userId)
         .whenComplete(() => taskProvider.getAllTaskLocal());
     setState(() {});
   }
 
-  startStreaming() {
+  startStreaming(String userId) {
     subscription = Connectivity().onConnectivityChanged.listen((event) async {
-      await checkInternet();
+      await checkInternet(userId);
     });
   }
 
@@ -89,20 +101,29 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // Gọi requestFocus() khi widget được xây dựng
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _currentUser.current_user_id =
+          Provider.of<MessagePageProvider>(context, listen: false)
+              .current_user_id;
+      Provider.of<CardProfileProvider>(context, listen: false)
+          .fetchCurrentUser(_currentUser.current_user_id);
       Provider.of<TaskProvider>(context, listen: false).getAllTaskLocal();
-      startStreaming();
+      startStreaming(_currentUser.current_user_id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
+    final userCurrent = Provider.of<CardProfileProvider>(context).user;
+    print(userCurrent?.name);
     final String dateFormat =
         DateFormat('dd/MM/yyyy').format(_selectedDateTime);
 
     final String dateNowFormat =
         DateFormat('dd/MM/yyyy').format(DateTime.now());
     return Scaffold(
+      key: _key,
+      drawer: NavigationDrawerProfile(isMe: widget.isMe, user: userCurrent),
       body: SingleChildScrollView(
         child: Consumer<TaskProvider>(
           builder: (context, taskData, child) => Column(
@@ -115,14 +136,14 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text(
                             'Xin chào 👋',
                             style: TextStyle(
                                 fontFamily: 'TodoAi-Book', fontSize: 15),
                           ),
                           Text(
-                            'HOMIE',
+                            '${userCurrent?.name}',
                             style: TextStyle(
                                 fontFamily: 'TodoAi-Bold', fontSize: 15),
                           )
@@ -135,16 +156,21 @@ class _HomePageState extends State<HomePage> {
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
-                          const Positioned(
-                            right: 0,
-                            height: 45,
-                            bottom: 8,
-                            child: CircleAvatar(
-                              radius: 30,
-                              backgroundImage:
-                                  AssetImage('assets/icons/avatar.png'),
-                            ),
-                          ),
+                          Builder(builder: (context) {
+                            return GestureDetector(
+                              onTap: () => _key.currentState!.openDrawer(),
+                              child: const Positioned(
+                                right: 0,
+                                height: 45,
+                                bottom: 8,
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage:
+                                      AssetImage('assets/icons/avatar.png'),
+                                ),
+                              ),
+                            );
+                          }),
                           Positioned(
                               bottom: 7,
                               left: 0,
@@ -245,9 +271,7 @@ class _HomePageState extends State<HomePage> {
                                       isUpdate: true,
                                       isDelete: task.isDelete),
                                   index);
-                                  setState(() {
-                                    
-                                  });
+                              setState(() {});
                             });
                       } else {
                         return const SizedBox.shrink();
@@ -297,9 +321,7 @@ class _HomePageState extends State<HomePage> {
                                     isUpdate: true,
                                     isDelete: task.isDelete),
                                 index);
-                                setState(() {
-                                  
-                                });
+                            setState(() {});
                           });
                     } else {
                       return const SizedBox.shrink();

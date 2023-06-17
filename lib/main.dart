@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:todoai_flutter/pages/login_page.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:todoai_flutter/providers/card_profile_provider.dart';
 
 //Region Provider
 import '/providers/pages/message_page_provider.dart';
@@ -14,7 +15,6 @@ import 'package:todoai_flutter/providers/task_provider.dart';
 import 'models/hives/count_app.dart';
 import 'models/hives/task.dart';
 import 'models/hives/userid.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,8 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: TaskProvider()),
-      ChangeNotifierProvider.value(value: MessagePageProvider())
+      ChangeNotifierProvider.value(value: MessagePageProvider()),
+      ChangeNotifierProvider.value(value: CardProfileProvider())
     ],
     child: const MainApp(),
   ));
