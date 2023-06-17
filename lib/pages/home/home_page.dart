@@ -4,11 +4,13 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todoai_flutter/models/hives/task.dart';
 import 'package:todoai_flutter/modules/tasks/add_task.dart';
 
 import 'package:todoai_flutter/pages/home/components/list_item_widget.dart';
 import 'package:todoai_flutter/providers/task_provider.dart';
+import 'package:todoai_flutter/widgets/add_popup/add_button.dart';
 import '/widgets/navigation_drawer_profile.dart';
 import '../../providers/card_profile_provider.dart';
 import '../../providers/pages/message_page_provider.dart';
@@ -333,19 +335,99 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-              backgroundColor: Colors.transparent,
-              context: context,
-              isScrollControlled: true,
-              builder: (context) {
-                return const AddTask();
+      floatingActionButton: DraggableFAB(),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     showModalBottomSheet(
+      //         backgroundColor: Colors.transparent,
+      //         context: context,
+      //         isScrollControlled: true,
+      //         builder: (context) {
+      //           return const AddTask();
+      //         });
+      //   },
+      //   child:  DraggableFAB()
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+class DraggableFAB extends StatefulWidget {
+  @override
+  _DraggableFABState createState() => _DraggableFABState();
+}
+
+class _DraggableFABState extends State<DraggableFAB> {
+  double xPosition = 30;
+  double yPosition = 30;
+  late double screenHeight;
+  late double screenWidth;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPosition();
+  }
+
+  Future<void> _savePosition(double x, double y) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('xPosition', x);
+    await prefs.setDouble('yPosition', y);
+  }
+
+  Future<void> _loadPosition() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      xPosition = prefs.getDouble('xPosition') ?? screenWidth - 65;
+      yPosition = prefs.getDouble('yPosition') ?? screenHeight - 143;
+      //Chỉnh kích thước ban đầu
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
+    return Stack(
+      children: [
+        AnimatedPositioned(
+          left: xPosition,
+          top: yPosition,
+          duration: Duration(milliseconds: 150), // Thời gian chuyển động
+          child: GestureDetector(
+            child: AddButton(),
+            onPanUpdate: (tapInfo) {
+              setState(() {
+                xPosition += tapInfo.delta.dx;
+                yPosition += tapInfo.delta.dy;
               });
-        },
-        child: Image.asset('assets/icons/Add_icon.png'),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+            },
+            onPanEnd: (tapInfo) {
+              double newXPosition =
+                  xPosition < screenWidth / 2 ? 15 : screenWidth - 65;
+              //Nếu xPosition (vị trí hiện tại của widget) nhỏ hơn giữa màn hình
+              //tức là widget nằm bên trái giữa màn hình, thì newXPosition được đặt là 15.
+              //Ngược lại, thì newXPosition được đặt là screenWidth - 66.
+              //##Ở đây, 56 là chiều rộng của FloatingActionButton
+              double newYPosition = yPosition;
+
+              if (yPosition < 0) {
+                newYPosition = 0;
+              } else if (yPosition > screenHeight - 112) {
+                newYPosition = screenHeight - 152;
+              }
+
+              setState(() {
+                xPosition = newXPosition;
+                yPosition = newYPosition;
+              });
+              _savePosition(xPosition, yPosition);
+            },
+          ),
+        ),
+      ],
     );
   }
 }
