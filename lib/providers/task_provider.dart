@@ -1,12 +1,9 @@
-
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoai_flutter/config/config.dart';
 import 'package:todoai_flutter/models/hives/task.dart';
-
 
 class TaskProvider extends ChangeNotifier {
   static const String _boxName = "taskBox";
@@ -20,22 +17,19 @@ class TaskProvider extends ChangeNotifier {
   getAllTaskLocal() async {
     var box = await Hive.openBox<Task>(_boxName);
 
-  
-
     _tasks = box.values.toList();
 
     notifyListeners();
   }
 
-  Future<void> getTaskServer() async {
+  Future<void> getTaskServer(String userId) async {
     await checkInterner();
     if (isConnected == true) {
       await Future.delayed(const Duration(seconds: 2));
       var box = await Hive.openBox<Task>(_boxName);
       await box.clear();
 
-      var result =
-          await Dio().get("$baseUrl/auth/getUser/6433cf38a042d150f0966572");
+      var result = await Dio().get("$baseUrl/auth/getUser/$userId");
       Map<String, dynamic> data = result.data as Map<String, dynamic>;
 
       var taskServer = data["message"]["tasks"];
