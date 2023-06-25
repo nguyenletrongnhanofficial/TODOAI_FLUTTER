@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:todoai_flutter/pages/home/home_page.dart';
+import 'package:todoai_flutter/pages/home_page.dart';
 
 import 'package:todoai_flutter/pages/login_page.dart';
 
@@ -74,7 +74,7 @@ void main() async {
   await Hive.openBox<Task>('taskBox');
 
   //Call-kit
-Workmanager().initialize(callbackDispatcher);
+  Workmanager().initialize(callbackDispatcher);
   await JustAudioBackground.init(
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',

@@ -8,21 +8,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todoai_flutter/models/hives/task.dart';
 import 'package:todoai_flutter/modules/tasks/add_task.dart';
 
-import 'package:todoai_flutter/pages/home/components/list_item_widget.dart';
+import '/components/list_item_widget.dart';
 import 'package:todoai_flutter/providers/task_provider.dart';
 import 'package:todoai_flutter/widgets/add_popup/add_button.dart';
 import '/widgets/navigation_drawer_profile.dart';
-import '../../providers/card_profile_provider.dart';
-import '../../providers/pages/message_page_provider.dart';
-import 'components/calendar.dart';
-import '../../modules/circle_progress/circle_progress.dart';
+import '../providers/card_profile_provider.dart';
+import '../providers/pages/message_page_provider.dart';
+import '/components/calendar.dart';
+import '../modules/circle_progress/circle_progress.dart';
 
 import 'package:flutter_callkit_incoming/entities/call_event.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-
-
 
 class HomePage extends StatefulWidget {
   final bool isMe;
@@ -498,7 +496,4 @@ class _DraggableFABState extends State<DraggableFAB> {
       ],
     );
   }
-
-  
-
 }
