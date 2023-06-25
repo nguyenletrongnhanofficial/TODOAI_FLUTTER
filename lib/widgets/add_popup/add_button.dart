@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:todoai_flutter/modules/tasks/add_task.dart';
 import '/widgets/add_popup/styles.dart';
 
 import 'custom_rect_tween.dart';
@@ -55,15 +56,20 @@ class _AddPopupCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Hero(
-          tag: _heroAdd,
-          createRectTween: (begin, end) {
-            return CustomRectTween(begin: begin, end: end);
-          },
-          child: //Cái hành động để mở;
-              Container(
-            height: 5,
-          )),
-    );
+        child: Hero(
+            tag: _heroAdd,
+            createRectTween: (begin, end) {
+              return CustomRectTween(begin: begin, end: end);
+            },
+            child: Material(
+              color: Colors.transparent.withOpacity(0.2),
+              child: InkWell(
+                  onTap: () {
+                    // Xử lý sự kiện onTap, ví dụ: đóng hộp thoại
+                    // Navigator.pop(context);
+                  },
+                  child: Container(
+                      padding: EdgeInsets.only(top: 70), child: AddTask())),
+            )));
   }
 }

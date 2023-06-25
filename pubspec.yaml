@@ -31,6 +31,10 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.3.2
   hive_generator: ^2.0.0
+  flutter_callkit_incoming: 1.0.3+3
+  workmanager: ^0.5.1
+  just_audio: ^0.9.28
+  just_audio_background: ^0.0.1-beta.7
 
 flutter:
   uses-material-design: true
@@ -38,6 +42,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/lotties/
+    - assets/audio/
   fonts:
     - family: TodoAi-Bold
       fonts:

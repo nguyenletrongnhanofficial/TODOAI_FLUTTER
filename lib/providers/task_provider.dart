@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoai_flutter/config/config.dart';
 import 'package:todoai_flutter/models/hives/task.dart';
+import 'package:workmanager/workmanager.dart';
 
 class TaskProvider extends ChangeNotifier {
   static const String _boxName = "taskBox";
@@ -145,5 +146,12 @@ class TaskProvider extends ChangeNotifier {
       isConnected = false;
     }
     notifyListeners();
+  }
+
+  RegisterTask(String text, int month, int day, int hours, int miniute) {
+    Workmanager().registerOneOffTask(text, text,
+        // initialDelay: Duration(seconds: int),
+        initialDelay: DateTime(2023, month, day, hours, miniute).difference(DateTime.now()),
+        inputData: {'title': text});
   }
 }
