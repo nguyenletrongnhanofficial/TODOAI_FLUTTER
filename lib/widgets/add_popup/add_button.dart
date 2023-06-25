@@ -57,12 +57,21 @@ class _AddPopupCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Hero(
-          tag: _heroAdd,
-          createRectTween: (begin, end) {
-            return CustomRectTween(begin: begin, end: end);
-          },
-          child: AddTask()),
-    );
+        child: Hero(
+            tag: _heroAdd,
+            createRectTween: (begin, end) {
+              return CustomRectTween(begin: begin, end: end);
+            },
+            child: Material(
+              color: Colors.transparent.withOpacity(0.2),
+              child: InkWell(
+                  onTap: () {
+                    // Xử lý sự kiện onTap, ví dụ: đóng hộp thoại
+                    // Navigator.pop(context);
+                  },
+                  child: Container(
+                      padding: EdgeInsets.only(top: 70), child: AddTask())),
+            )));
+    
   }
 }

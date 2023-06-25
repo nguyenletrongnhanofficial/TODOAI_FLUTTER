@@ -17,6 +17,13 @@ import '../../providers/pages/message_page_provider.dart';
 import 'components/calendar.dart';
 import '../../modules/circle_progress/circle_progress.dart';
 
+import 'package:flutter_callkit_incoming/entities/call_event.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
+
+
+
 class HomePage extends StatefulWidget {
   final bool isMe;
   const HomePage({super.key, required this.isMe});
@@ -98,6 +105,66 @@ class _HomePageState extends State<HomePage> {
     return countTask;
   }
 
+  Future<void> listenerEvent(void Function(CallEvent) callback) async {
+    try {
+      FlutterCallkitIncoming.onEvent.listen((event) async {
+        print('HOME: $event');
+        switch (event!.event) {
+          case Event.ACTION_DID_UPDATE_DEVICE_PUSH_TOKEN_VOIP:
+            print('3333333333333333333333333333333333333');
+            break;
+          case Event.ACTION_CALL_INCOMING:
+            print('444444444444444444444444444');
+            break;
+          case Event.ACTION_CALL_START:
+            print('55555555555555555555555555555');
+            break;
+          case Event.ACTION_CALL_ACCEPT:
+            print('11111111111111111111111111111111111');
+            final _player = AudioPlayer();
+            _player.setAudioSource(AudioSource.asset('assets/audio/wakeup.mp3',
+                tag: MediaItem(id: 'id', title: 'title')));
+            _player.play();
+            break;
+          case Event.ACTION_CALL_DECLINE:
+            print('22222222222222222222222222222222222');
+            break;
+          case Event.ACTION_CALL_ENDED:
+            print('6666666666666666666666666666666666');
+            break;
+          case Event.ACTION_CALL_TIMEOUT:
+            print('77777777777777777777777777777');
+            break;
+          case Event.ACTION_CALL_CALLBACK:
+            print('888888888888888888888888888888888888');
+            break;
+          case Event.ACTION_CALL_TOGGLE_HOLD:
+            print('999999999999999999999999999999999999');
+            break;
+          case Event.ACTION_CALL_TOGGLE_MUTE:
+            print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+            break;
+          case Event.ACTION_CALL_TOGGLE_DMTF:
+            print('qqqqqqqqqqqqqqqqqqqqqqqqqqqq');
+            break;
+          case Event.ACTION_CALL_TOGGLE_GROUP:
+            print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
+            break;
+          case Event.ACTION_CALL_TOGGLE_AUDIO_SESSION:
+            print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+            break;
+        }
+        callback(event);
+      });
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  void onEvent(CallEvent event) {
+    if (!mounted) return;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -111,6 +178,7 @@ class _HomePageState extends State<HomePage> {
       Provider.of<TaskProvider>(context, listen: false).getAllTaskLocal();
       startStreaming(_currentUser.current_user_id);
     });
+    listenerEvent(onEvent);
   }
 
   @override
@@ -430,4 +498,7 @@ class _DraggableFABState extends State<DraggableFAB> {
       ],
     );
   }
+
+  
+
 }
