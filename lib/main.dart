@@ -113,7 +113,7 @@ class MainApp extends StatelessWidget {
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
       ],
-      home: const HomePage(isMe: true),
+      home: const Login(),
       debugShowCheckedModeBanner: false,
     );
   }
