@@ -1,7 +1,7 @@
 import 'package:lottie/lottie.dart';
 import '/pages/sign_up_page.dart';
 
-import '../utils/color.dart';
+import '../values/color.dart';
 import '../widgets/onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

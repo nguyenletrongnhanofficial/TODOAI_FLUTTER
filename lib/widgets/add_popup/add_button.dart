@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:todoai_flutter/modules/tasks/add_task.dart';
+import '../../pages/login_page.dart';
 import '/widgets/add_popup/styles.dart';
 
 import 'custom_rect_tween.dart';
@@ -60,10 +62,7 @@ class _AddPopupCard extends StatelessWidget {
           createRectTween: (begin, end) {
             return CustomRectTween(begin: begin, end: end);
           },
-          child: //Cái hành động để mở;
-              Container(
-            height: 5,
-          )),
+          child: AddTask()),
     );
   }
 }
