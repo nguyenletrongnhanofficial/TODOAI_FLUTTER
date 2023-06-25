@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lottie/lottie.dart';
 import '../widgets/animations/draw_clip.dart';
 import '/pages/forget_password_page.dart';
-import 'home/home_page.dart';
+import 'home_page.dart';
 import '/pages/onboarding.dart';
 import '/pages/sign_up_page.dart';
 import '/providers/pages/message_page_provider.dart';
