@@ -42,7 +42,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/lotties/
-    - assets/audio/
+    - assets/audios/
   fonts:
     - family: TodoAi-Bold
       fonts:

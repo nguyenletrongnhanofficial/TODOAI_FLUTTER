@@ -160,251 +160,260 @@ class _AddTaskState extends State<AddTask> {
   @override
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
-     Size size = MediaQuery.of(context).size;
-    return 
-       Align(
+    Size size = MediaQuery.of(context).size;
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: Align(
         alignment: Alignment.topCenter,
         child: Container(
-          width: size.width*0.9,
+          width: size.width * 0.9,
           height: 300,
           padding: const EdgeInsets.all(20),
           decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(
-                  Radius.circular(30))),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  height: 4,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF0D0140),
-                    borderRadius: BorderRadius.circular(40),
+              borderRadius: BorderRadius.all(Radius.circular(30))),
+          child: Material(
+            color: Colors.white,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    height: 4,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0D0140),
+                      borderRadius: BorderRadius.circular(40),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Center(
-                child: Text(
-                  'Thêm công việc',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontFamily: 'TodoAi-Medium'),
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Divider(),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: textEditingController,
-                focusNode: _focusNode,
-                style: const TextStyle(fontSize: 16, fontFamily: "TodoAi-Book"),
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  hintText: "Việc mới cần làm",
-                  hintStyle: TextStyle(fontSize: 16, fontFamily: "TodoAi-Book"),
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
-                ),
-                maxLines: null,
-                cursorColor: Colors.black,
-                cursorHeight: 20,
-              ),
-              const SizedBox(
-                height: 3,
-              ),
-              Row(
-                children: const [
-                  Text(
-                    'Ví dụ cú pháp:',
+                const Center(
+                  child: Text(
+                    'Thêm công việc',
                     style: TextStyle(
-                      fontSize: 12,
-                    ),
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontFamily: 'TodoAi-Medium'),
                   ),
-                  Text(
-                    ' họp nhóm/21:30 21.04.2023//mô tả',
-                    style: TextStyle(fontSize: 10, fontFamily: "TodoAi-Book"),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  const Text(
-                    'Màu sắc',
-                    style: TextStyle(fontSize: 15),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Divider(),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  controller: textEditingController,
+                  focusNode: _focusNode,
+                  style:
+                      const TextStyle(fontSize: 16, fontFamily: "TodoAi-Book"),
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    hintText: "Việc mới cần làm",
+                    hintStyle:
+                        TextStyle(fontSize: 16, fontFamily: "TodoAi-Book"),
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
                   ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(
-                    child: Stack(children: [
-                      Container(
-                        height: 40,
-                        width: 230,
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 228, 228, 228),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      Positioned(
-                        left: 10,
-                        top: 3,
-                        child: Wrap(
-                          children: List<Widget>.generate(7, (int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectColor = index;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(5, 8, 5, 8),
-                                child: CircleAvatar(
-                                  radius: 10,
-                                  backgroundColor: index == 0
-                                      ? Colors.red
-                                      : index == 1
-                                          ? Colors.yellow
-                                          : index == 2
-                                              ? Colors.green
-                                              : index == 3
-                                                  ? Colors.blue
-                                                  : index == 4
-                                                      ? Colors.pinkAccent
-                                                      : index == 5
-                                                          ? Colors.deepPurple
-                                                          : Colors.black,
-                                  child: selectColor == index
-                                      ? const Icon(
-                                          Icons.done,
-                                          color: Colors.white,
-                                          size: 12,
-                                        )
-                                      : const SizedBox(),
-                                ),
-                              ),
-                            );
-                          }),
-                        ),
-                      ),
-                    ]),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                  maxLines: null,
+                  cursorColor: Colors.black,
+                  cursorHeight: 20,
+                ),
+                const SizedBox(
+                  height: 3,
+                ),
+                Row(
+                  children: const [
+                    Text(
+                      'Ví dụ cú pháp:',
+                      style: TextStyle(
+                        fontSize: 12,
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      showGeneralDialog(
-                          barrierLabel: "Barrier",
-                          barrierDismissible: true,
-                          barrierColor: Colors.black.withOpacity(0.5),
-                          transitionDuration: const Duration(milliseconds: 400),
-                          context: context,
-                          pageBuilder: (_, __, ___) {
-                            return const AddTaskClassic();
-                          },
-                          transitionBuilder: (_, anim, __, child) {
-                            Tween<Offset> tween;
-    
-                            // if (anim.status == AnimationStatus.reverse) {
-                            //   tween = Tween(begin: const Offset(0, 1), end: Offset.zero);
-                            // } else {
-                            //   tween = Tween(begin: const Offset(0, -1), end: Offset.zero);
-                            // }
-    
-                            tween = Tween(
-                                begin: const Offset(0, 1), end: Offset.zero);
-    
-                            return SlideTransition(
-                              position: tween.animate(
-                                CurvedAnimation(
-                                    parent: anim, curve: Curves.easeInOut),
-                              ),
-                              //mờ
-                              // child: FadeTransition(
-                              //   opacity: anim,
-                              //   child: child,
-                              // ),
-                              child: child,
-                            );
-                          });
-                    },
-                    child: const Text(
-                      'Đặt lịch cổ điển',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    Text(
+                      ' họp nhóm/21:30 21.04.2023//mô tả',
+                      style: TextStyle(fontSize: 10, fontFamily: "TodoAi-Book"),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    const Text(
+                      'Màu sắc',
+                      style: TextStyle(fontSize: 15),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                    SizedBox(
+                      width: 5,
                     ),
-                    onPressed: () {},
-                    child: Row(
-                      children: [
-                        const Text(
-                          'Sử dụng Al',
-                          style: TextStyle(color: Colors.white, fontSize: 12),
-                        ),
-                        Image.asset('assets/icons/icon_ai.png')
-                      ],
-                    ),
-                  ),
-                  Consumer<TaskProvider>(
-                    builder: (context, taskData, child) => Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            iconSize: 35,
-                            onPressed: () async {
-                              await postTaskLocal(taskProvider);
-                              postTaskServer(taskProvider, taskData.tasks.length);
-                            },
-                            icon: Image.asset('assets/icons/done_icon.gif'),
+                    Expanded(
+                      child: Stack(children: [
+                        Container(
+                          height: 40,
+                          width: 230,
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 228, 228, 228),
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          const Padding(padding: EdgeInsets.only(right: 5))
+                        ),
+                        Positioned(
+                          left: 10,
+                          top: 3,
+                          child: Wrap(
+                            children: List<Widget>.generate(7, (int index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectColor = index;
+                                  });
+                                },
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 8, 5, 8),
+                                  child: CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: index == 0
+                                        ? Colors.red
+                                        : index == 1
+                                            ? Colors.yellow
+                                            : index == 2
+                                                ? Colors.green
+                                                : index == 3
+                                                    ? Colors.blue
+                                                    : index == 4
+                                                        ? Colors.pinkAccent
+                                                        : index == 5
+                                                            ? Colors.deepPurple
+                                                            : Colors.black,
+                                    child: selectColor == index
+                                        ? const Icon(
+                                            Icons.done,
+                                            color: Colors.white,
+                                            size: 12,
+                                          )
+                                        : const SizedBox(),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ]),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        showGeneralDialog(
+                            barrierLabel: "Barrier",
+                            barrierDismissible: true,
+                            barrierColor: Colors.black.withOpacity(0.5),
+                            transitionDuration:
+                                const Duration(milliseconds: 400),
+                            context: context,
+                            pageBuilder: (_, __, ___) {
+                              return const AddTaskClassic();
+                            },
+                            transitionBuilder: (_, anim, __, child) {
+                              Tween<Offset> tween;
+
+                              // if (anim.status == AnimationStatus.reverse) {
+                              //   tween = Tween(begin: const Offset(0, 1), end: Offset.zero);
+                              // } else {
+                              //   tween = Tween(begin: const Offset(0, -1), end: Offset.zero);
+                              // }
+
+                              tween = Tween(
+                                  begin: const Offset(0, 1), end: Offset.zero);
+
+                              return SlideTransition(
+                                position: tween.animate(
+                                  CurvedAnimation(
+                                      parent: anim, curve: Curves.easeInOut),
+                                ),
+                                //mờ
+                                // child: FadeTransition(
+                                //   opacity: anim,
+                                //   child: child,
+                                // ),
+                                child: child,
+                              );
+                            });
+                      },
+                      child: const Text(
+                        'Đặt lịch cổ điển',
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: Row(
+                        children: [
+                          const Text(
+                            'Sử dụng Al',
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                          Image.asset('assets/icons/icon_ai.png')
                         ],
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    Consumer<TaskProvider>(
+                      builder: (context, taskData, child) => Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              iconSize: 35,
+                              onPressed: () async {
+                                await postTaskLocal(taskProvider);
+                                postTaskServer(
+                                    taskProvider, taskData.tasks.length);
+                              },
+                              icon: Image.asset('assets/images/add.png'),
+                            ),
+                            const Padding(padding: EdgeInsets.only(right: 5))
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
+      ),
     );
   }
 }

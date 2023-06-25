@@ -50,7 +50,7 @@ void callbackDispatcher() {
           isShowMissedCallNotification: true,
           ringtonePath: 'system_ringtone_default',
           backgroundColor: "#0955fa",
-          backgroundUrl: "assets/backgrounds/bgCall.gif",
+          backgroundUrl: "assets/images/bgCall.gif",
           actionColor: "#4CAF50",
           incomingCallNotificationChannelName: "Incoming call",
           missedCallNotificationChannelName: "Missed call"),

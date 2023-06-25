@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:todoai_flutter/modules/tasks/add_task.dart';
 import '../../pages/login_page.dart';
+import '../blurred_dialog/blurred_dialog.dart';
 import '/widgets/add_popup/styles.dart';
 
 import 'custom_rect_tween.dart';
@@ -50,28 +51,24 @@ const String _heroAdd = 'add--hero';
 ///
 /// Uses a [Hero] with tag [_heroAdd].
 /// {@endtemplate}
-class _AddPopupCard extends StatelessWidget {
+class _AddPopupCard extends StatefulWidget {
   /// {@macro add__popup_card}
   const _AddPopupCard({Key? key}) : super(key: key);
 
   @override
+  State<_AddPopupCard> createState() => _AddPopupCardState();
+}
+
+class _AddPopupCardState extends State<_AddPopupCard> {
+  @override
   Widget build(BuildContext context) {
     return Center(
         child: Hero(
-            tag: _heroAdd,
-            createRectTween: (begin, end) {
-              return CustomRectTween(begin: begin, end: end);
-            },
-            child: Material(
-              color: Colors.transparent.withOpacity(0.2),
-              child: InkWell(
-                  onTap: () {
-                    // Xử lý sự kiện onTap, ví dụ: đóng hộp thoại
-                    // Navigator.pop(context);
-                  },
-                  child: Container(
-                      padding: EdgeInsets.only(top: 70), child: AddTask())),
-            )));
-    
+      tag: _heroAdd,
+      createRectTween: (begin, end) {
+        return CustomRectTween(begin: begin, end: end);
+      },
+      child: BlurredDialog(dialogContent: const AddTask()),
+    ));
   }
 }
