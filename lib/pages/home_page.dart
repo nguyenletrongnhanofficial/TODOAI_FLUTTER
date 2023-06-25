@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
           case Event.ACTION_CALL_ACCEPT:
             print('11111111111111111111111111111111111');
             final _player = AudioPlayer();
-            _player.setAudioSource(AudioSource.asset('assets/audio/wakeup.mp3',
+            _player.setAudioSource(AudioSource.asset('assets/audios/wakeup.mp3',
                 tag: MediaItem(id: 'id', title: 'title')));
             _player.play();
             break;
