@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static const Color mainColor = Color(0xffff4377);
+  static const Color mainColor = Color(0xff6b4cb9);
   static const Color ratecolor = Color(0xff5386E4);
   static const Color invitecolor = Color(0xff0E9D57);
   static const Color titletextcolor = Color(0xff0D0D26);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:todoai_flutter/modules/tasks/add_task.dart';
+import '../../pages/login_page.dart';
 import '/widgets/add_popup/styles.dart';
 
 import 'custom_rect_tween.dart';
@@ -71,5 +72,6 @@ class _AddPopupCard extends StatelessWidget {
                   child: Container(
                       padding: EdgeInsets.only(top: 70), child: AddTask())),
             )));
+    
   }
 }
