@@ -58,4 +58,9 @@ class Task {
         isDelete: false,
         isUpdate: false);
   }
+
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'time': time,
+      };
 }

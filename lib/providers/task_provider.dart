@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:todoai_flutter/config/config.dart';
 import 'package:todoai_flutter/models/hives/task.dart';
 import 'package:workmanager/workmanager.dart';
@@ -148,10 +151,21 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  RegisterTask(String text, int month, int day, int hours, int miniute) {
+  registerTask(String text, int month, int day, int hours, int miniute) {
     Workmanager().registerOneOffTask(text, text,
         // initialDelay: Duration(seconds: int),
-        initialDelay: DateTime(2023, month, day, hours, miniute).difference(DateTime.now()),
+        initialDelay: DateTime(2023, month, day, hours, miniute)
+            .difference(DateTime.now()),
         inputData: {'title': text});
+  }
+
+  homeWidget() async {
+    DateTime date = DateTime.now();
+    await getAllTaskLocal();
+    await HomeWidget.saveWidgetData('date',
+        'Thứ ${date.weekday}, Ngày ${date.day}-${date.month}-${date.year}');
+    await HomeWidget.saveWidgetData(
+        'tasks', jsonEncode(_tasks.map((task) => task.toJson()).toList()));
+    await HomeWidget.updateWidget(androidName: 'HomeScreenWidgetProvider');
   }
 }
