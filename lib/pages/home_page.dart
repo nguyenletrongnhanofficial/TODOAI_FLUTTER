@@ -1,12 +1,12 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todoai_flutter/models/hives/task.dart';
-import 'package:todoai_flutter/modules/tasks/add_task.dart';
 
 import '/components/list_item_widget.dart';
 import 'package:todoai_flutter/providers/task_provider.dart';
@@ -106,50 +106,36 @@ class _HomePageState extends State<HomePage> {
   Future<void> listenerEvent(void Function(CallEvent) callback) async {
     try {
       FlutterCallkitIncoming.onEvent.listen((event) async {
-        print('HOME: $event');
         switch (event!.event) {
           case Event.ACTION_DID_UPDATE_DEVICE_PUSH_TOKEN_VOIP:
-            print('3333333333333333333333333333333333333');
             break;
           case Event.ACTION_CALL_INCOMING:
-            print('444444444444444444444444444');
             break;
           case Event.ACTION_CALL_START:
-            print('55555555555555555555555555555');
             break;
           case Event.ACTION_CALL_ACCEPT:
-            print('11111111111111111111111111111111111');
             final _player = AudioPlayer();
             _player.setAudioSource(AudioSource.asset('assets/audios/wakeup.mp3',
-                tag: MediaItem(id: 'id', title: 'title')));
+                tag: const MediaItem(id: 'id', title: 'title')));
             _player.play();
             break;
           case Event.ACTION_CALL_DECLINE:
-            print('22222222222222222222222222222222222');
             break;
           case Event.ACTION_CALL_ENDED:
-            print('6666666666666666666666666666666666');
             break;
           case Event.ACTION_CALL_TIMEOUT:
-            print('77777777777777777777777777777');
             break;
           case Event.ACTION_CALL_CALLBACK:
-            print('888888888888888888888888888888888888');
             break;
           case Event.ACTION_CALL_TOGGLE_HOLD:
-            print('999999999999999999999999999999999999');
             break;
           case Event.ACTION_CALL_TOGGLE_MUTE:
-            print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
             break;
           case Event.ACTION_CALL_TOGGLE_DMTF:
-            print('qqqqqqqqqqqqqqqqqqqqqqqqqqqq');
             break;
           case Event.ACTION_CALL_TOGGLE_GROUP:
-            print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
             break;
           case Event.ACTION_CALL_TOGGLE_AUDIO_SESSION:
-            print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
             break;
         }
         callback(event);
@@ -167,7 +153,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     // Gọi requestFocus() khi widget được xây dựng
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
       _currentUser.current_user_id =
           Provider.of<MessagePageProvider>(context, listen: false)
               .current_user_id;
@@ -175,8 +161,14 @@ class _HomePageState extends State<HomePage> {
           .fetchCurrentUser(_currentUser.current_user_id);
       Provider.of<TaskProvider>(context, listen: false).getAllTaskLocal();
       startStreaming(_currentUser.current_user_id);
+
+      //Homewidget
+      Provider.of<TaskProvider>(context, listen: false).homeWidget();
     });
     listenerEvent(onEvent);
+
+    
+    
   }
 
   @override
@@ -205,14 +197,14 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             'Xin chào 👋',
                             style: TextStyle(
                                 fontFamily: 'TodoAi-Book', fontSize: 15),
                           ),
                           Text(
                             '${userCurrent?.name}',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontFamily: 'TodoAi-Bold', fontSize: 15),
                           )
                         ],
@@ -296,61 +288,61 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 5,
               ),
-              SingleChildScrollView(
-                child: SizedBox(
-                  height: 330,
-                  child: ListView.builder(
-                    itemCount: taskData.tasks.length,
-                    itemBuilder: (context, index) {
-                      Task task = taskData.tasks[index];
-                      if (task.isComplete == false &&
-                          task.date == dateFormat &&
-                          task.isDelete == false) {
-                        return ListItemWidget(
-                            index: index,
-                            task: task,
-                            onClicked: () async {
-                              await taskProvider
-                                  .updateTaskLocal(
-                                      Task(
-                                          id: task.id,
-                                          date: task.date,
-                                          title: task.title,
-                                          isComplete: true,
-                                          describe: task.describe,
-                                          time: task.time,
-                                          color: task.color,
-                                          isAdd: task.isAdd,
-                                          isUpdate: true,
-                                          isDelete: task.isDelete),
-                                      index)
-                                  .whenComplete(
-                                      () => taskProvider.getAllTaskLocal());
-                              taskProvider.updateTaskServer(
-                                  Task(
-                                      id: task.id,
-                                      date: task.date,
-                                      title: task.title,
-                                      isComplete: true,
-                                      describe: task.describe,
-                                      time: task.time,
-                                      color: task.color,
-                                      isAdd: task.isAdd,
-                                      isUpdate: true,
-                                      isDelete: task.isDelete),
-                                  index);
-                              setState(() {});
-                            });
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    },
-                  ),
+              SizedBox(
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: taskData.tasks.length,
+                  itemBuilder: (context, index) {
+                    Task task = taskData.tasks[index];
+                    if (task.isComplete == false &&
+                        task.date == dateFormat &&
+                        task.isDelete == false) {
+                      return ListItemWidget(
+                          index: index,
+                          task: task,
+                          onClicked: () async {
+                            await taskProvider
+                                .updateTaskLocal(
+                                    Task(
+                                        id: task.id,
+                                        date: task.date,
+                                        title: task.title,
+                                        isComplete: true,
+                                        describe: task.describe,
+                                        time: task.time,
+                                        color: task.color,
+                                        isAdd: task.isAdd,
+                                        isUpdate: true,
+                                        isDelete: task.isDelete),
+                                    index)
+                                .whenComplete(
+                                    () => taskProvider.getAllTaskLocal());
+                            taskProvider.updateTaskServer(
+                                Task(
+                                    id: task.id,
+                                    date: task.date,
+                                    title: task.title,
+                                    isComplete: true,
+                                    describe: task.describe,
+                                    time: task.time,
+                                    color: task.color,
+                                    isAdd: task.isAdd,
+                                    isUpdate: true,
+                                    isDelete: task.isDelete),
+                                index);
+                            setState(() {});
+                          });
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
                 ),
               ),
               CircleProgress(tasks: taskData.tasks),
               SizedBox(
                 child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: taskData.tasks.length,
                   itemBuilder: (context, index) {
@@ -402,19 +394,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: DraggableFAB(),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      // showModalBottomSheet(
-      //     backgroundColor: Colors.transparent,
-      //     context: context,
-      //     isScrollControlled: true,
-      //     builder: (context) {
-      //       return const AddTask();
-      //     });
-      //   },
-      //   child:  DraggableFAB()
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -461,9 +440,9 @@ class _DraggableFABState extends State<DraggableFAB> {
         AnimatedPositioned(
           left: xPosition,
           top: yPosition,
-          duration: Duration(milliseconds: 150), // Thời gian chuyển động
+          duration: const Duration(milliseconds: 150), // Thời gian chuyển động
           child: GestureDetector(
-            child: AddButton(),
+            child: const AddButton(),
             onPanUpdate: (tapInfo) {
               setState(() {
                 xPosition += tapInfo.delta.dx;

@@ -88,8 +88,9 @@ class _AddTaskState extends State<AddTask> {
               isDelete: false))
           .whenComplete(() {
         taskProvider.getAllTaskLocal();
-        taskProvider.RegisterTask(
+        taskProvider.registerTask(
             title, dateTime.month, dateTime.day, hour, minute);
+        taskProvider.homeWidget();
         Navigator.pop(context);
       });
     } catch (e) {
@@ -162,7 +163,7 @@ class _AddTaskState extends State<AddTask> {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     Size size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(top: 30),
       child: Align(
         alignment: Alignment.topCenter,
         child: Container(
