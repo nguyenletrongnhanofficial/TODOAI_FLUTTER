@@ -18,7 +18,7 @@ int selectColor = 0;
 
 class _AddTaskClassicState extends State<AddTaskClassic> {
   int selectColor = 0;
-  
+
   DateTime currentDateTime = DateTime.now();
   TimeOfDay currentTime = TimeOfDay.now();
   TextEditingController titleEditingController = TextEditingController();
@@ -36,31 +36,37 @@ class _AddTaskClassicState extends State<AddTaskClassic> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-  
   }
 
   Future<void> postTaskLocal(TaskProvider taskProvider) async {
     try {
       String date = DateFormat('dd/MM/yyyy')
           .format(DateFormat('dd/MM/yyyy').parse(dateEditingController.text));
+      DateTime dateTime = DateFormat('dd/MM/yyyy').parse(date);
+      List<String> timeComponents = timeEditingController.text.split(':');
+      int hour = int.parse(timeComponents[0]);
+      int minute = int.parse(timeComponents[1]);
 
-       taskProvider
-          .addTaskLocal(Task(           
+      taskProvider
+          .addTaskLocal(Task(
               date: date,
               title: titleEditingController.text,
               isComplete: false,
               describe: describeEditingController.text.isEmpty
-            ? "Không có mô tả"
-            : describeEditingController.text,
+                  ? "Không có mô tả"
+                  : describeEditingController.text,
               time: timeEditingController.text.isEmpty
-            ? ""
-            : timeEditingController.text,
+                  ? ""
+                  : timeEditingController.text,
               color: selectColor,
               isAdd: true,
               isUpdate: false,
               isDelete: false))
           .whenComplete(() {
         taskProvider.getAllTaskLocal();
+        taskProvider.registerTask(titleEditingController.text, dateTime.month,
+            dateTime.day, hour, minute);
+        taskProvider.homeWidget();
         Navigator.pop(context);
       });
     } catch (e) {
@@ -69,9 +75,8 @@ class _AddTaskClassicState extends State<AddTaskClassic> {
   }
 
   Future<void> postTaskServer(TaskProvider taskProvider, int lenght) async {
-   
-     String date = DateFormat('dd/MM/yyyy')
-          .format(DateFormat('dd/MM/yyyy').parse(dateEditingController.text));
+    String date = DateFormat('dd/MM/yyyy')
+        .format(DateFormat('dd/MM/yyyy').parse(dateEditingController.text));
 
     await taskProvider.checkInterner();
     var isConnected = taskProvider.isConnected;
@@ -100,11 +105,11 @@ class _AddTaskClassicState extends State<AddTaskClassic> {
                     title: titleEditingController.text,
                     isComplete: false,
                     describe: describeEditingController.text.isEmpty
-            ? "Không có mô tả"
-            : describeEditingController.text,
+                        ? "Không có mô tả"
+                        : describeEditingController.text,
                     time: timeEditingController.text.isEmpty
-            ? ""
-            : timeEditingController.text,
+                        ? ""
+                        : timeEditingController.text,
                     color: selectColor,
                     isAdd: false,
                     isUpdate: false,
@@ -393,32 +398,33 @@ class _AddTaskClassicState extends State<AddTaskClassic> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Consumer<TaskProvider>(builder: (context, taskData, child) => 
-                    ElevatedButton(
-                         onPressed: () async{
+                    Consumer<TaskProvider>(
+                      builder: (context, taskData, child) => ElevatedButton(
+                          onPressed: () async {
                             await postTaskLocal(taskProvider);
                             postTaskServer(taskProvider, taskData.tasks.length);
                           },
-                        style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all<Size>(
-                              const Size(200, 50)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                          style: ButtonStyle(
+                            minimumSize: MaterialStateProperty.all<Size>(
+                                const Size(200, 50)),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                             ),
                           ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                            Text('Tạo công việc')
-                          ],
-                        )),)
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                              Text('Tạo công việc')
+                            ],
+                          )),
+                    )
                   ],
                 ),
               ),

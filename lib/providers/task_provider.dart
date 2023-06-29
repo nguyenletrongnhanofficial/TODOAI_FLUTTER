@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:todoai_flutter/config/config.dart';
 import 'package:todoai_flutter/models/hives/task.dart';
 import 'package:workmanager/workmanager.dart';
@@ -55,7 +56,6 @@ class TaskProvider extends ChangeNotifier {
   Future<void> deleteTaskLocal(int index) async {
     var box = await Hive.openBox<Task>(_boxName);
     box.deleteAt(index);
-
     notifyListeners();
   }
 
@@ -161,11 +161,19 @@ class TaskProvider extends ChangeNotifier {
 
   homeWidget() async {
     DateTime date = DateTime.now();
+    String dateFomat = DateFormat('dd/MM/yyyy').format(date);
+    print(dateFomat);
     await getAllTaskLocal();
     await HomeWidget.saveWidgetData('date',
         'Thứ ${date.weekday}, Ngày ${date.day}-${date.month}-${date.year}');
-    await HomeWidget.saveWidgetData(
-        'tasks', jsonEncode(_tasks.map((task) => task.toJson()).toList()));
+    List<Task> listTaskHomewidget = _tasks
+        .where((task) =>
+            task.date == dateFomat &&
+            task.isComplete == false &&
+            task.isDelete == false)
+        .toList();
+    await HomeWidget.saveWidgetData('tasks',
+        jsonEncode(listTaskHomewidget.map((task) => task.toJson()).toList()));
     await HomeWidget.updateWidget(androidName: 'HomeScreenWidgetProvider');
   }
 }

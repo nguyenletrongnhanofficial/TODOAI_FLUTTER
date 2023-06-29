@@ -1,4 +1,4 @@
-const baseUrl = "https://b516-14-241-237-160.ngrok-free.app";
+const baseUrl = "https://0e32-123-21-33-87.ngrok-free.app";
 
 //Link Local: http://localhost:5000
 //Link Deloy: https://todoai.onrender.com
