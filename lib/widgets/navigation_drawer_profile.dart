@@ -241,58 +241,58 @@ class NavigationDrawerProfile extends StatelessWidget {
         //     );
         //   },
         // ),
-        ListTile(
-          leading: const Icon(
-            Icons.list_alt_rounded,
-            color: Colors.grey,
-          ),
-          title: Transform(
-            transform: Matrix4.translationValues(-width * 0.045, 0.0, 0.0),
-            child: Text(
-              "Bài đăng tìm Freelance",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: width * 0.0381,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          hoverColor: Colors.blue[100],
-          onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => UserPostFee(),
-            //   ),
-            // );
-          },
-        ),
-        ListTile(
-          leading: const Icon(
-            Icons.list_alt_rounded,
-            color: Colors.grey,
-          ),
-          title: Transform(
-            transform: Matrix4.translationValues(-width * 0.045, 0.0, 0.0),
-            child: Text(
-              "Bài đăng tư vấn miễn phí",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: width * 0.0381,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          hoverColor: Colors.blue[100],
-          onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => ResumePage(),
-            //   ),
-            // );
-          },
-        ),
+        // ListTile(
+        //   leading: const Icon(
+        //     Icons.list_alt_rounded,
+        //     color: Colors.grey,
+        //   ),
+        //   title: Transform(
+        //     transform: Matrix4.translationValues(-width * 0.045, 0.0, 0.0),
+        //     child: Text(
+        //       "Bài đăng tìm Freelance",
+        //       style: TextStyle(
+        //         color: Colors.black,
+        //         fontSize: width * 0.0381,
+        //         fontWeight: FontWeight.bold,
+        //       ),
+        //     ),
+        //   ),
+        //   hoverColor: Colors.blue[100],
+        //   onTap: () {
+        //     // Navigator.push(
+        //     //   context,
+        //     //   MaterialPageRoute(
+        //     //     builder: (context) => UserPostFee(),
+        //     //   ),
+        //     // );
+        //   },
+        // ),
+        // ListTile(
+        //   leading: const Icon(
+        //     Icons.list_alt_rounded,
+        //     color: Colors.grey,
+        //   ),
+        //   title: Transform(
+        //     transform: Matrix4.translationValues(-width * 0.045, 0.0, 0.0),
+        //     child: Text(
+        //       "Bài đăng tư vấn miễn phí",
+        //       style: TextStyle(
+        //         color: Colors.black,
+        //         fontSize: width * 0.0381,
+        //         fontWeight: FontWeight.bold,
+        //       ),
+        //     ),
+        //   ),
+        //   hoverColor: Colors.blue[100],
+        //   onTap: () {
+        //     // Navigator.push(
+        //     //   context,
+        //     //   MaterialPageRoute(
+        //     //     builder: (context) => ResumePage(),
+        //     //   ),
+        //     // );
+        //   },
+        // ),
         ListTile(
           leading: const Icon(
             Icons.settings,

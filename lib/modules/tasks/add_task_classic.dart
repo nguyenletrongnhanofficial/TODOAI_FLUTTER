@@ -7,6 +7,8 @@ import 'package:todoai_flutter/models/hives/task.dart';
 
 import 'package:todoai_flutter/providers/task_provider.dart';
 
+import '../../providers/pages/message_page_provider.dart';
+
 class AddTaskClassic extends StatefulWidget {
   const AddTaskClassic({super.key});
 
@@ -43,10 +45,7 @@ class _AddTaskClassicState extends State<AddTaskClassic> {
       String date = DateFormat('dd/MM/yyyy')
           .format(DateFormat('dd/MM/yyyy').parse(dateEditingController.text));
       DateTime dateTime = DateFormat('dd/MM/yyyy').parse(date);
-      List<String> timeComponents = timeEditingController.text.split(':');
-      int hour = int.parse(timeComponents[0]);
-      int minute = int.parse(timeComponents[1]);
-
+      
       taskProvider
           .addTaskLocal(Task(
               date: date,
@@ -64,8 +63,13 @@ class _AddTaskClassicState extends State<AddTaskClassic> {
               isDelete: false))
           .whenComplete(() {
         taskProvider.getAllTaskLocal();
-        taskProvider.registerTask(titleEditingController.text, dateTime.month,
-            dateTime.day, hour, minute);
+        if (timeEditingController.text.isNotEmpty) {
+          List<String> timeComponents = timeEditingController.text.split(':');
+          int hour = int.parse(timeComponents[0]);
+          int minute = int.parse(timeComponents[1]);
+          taskProvider.registerTask(
+              titleEditingController.text, dateTime.month, dateTime.day, hour, minute);
+        }
         taskProvider.homeWidget();
         Navigator.pop(context);
       });
@@ -77,14 +81,15 @@ class _AddTaskClassicState extends State<AddTaskClassic> {
   Future<void> postTaskServer(TaskProvider taskProvider, int lenght) async {
     String date = DateFormat('dd/MM/yyyy')
         .format(DateFormat('dd/MM/yyyy').parse(dateEditingController.text));
-
+    String userId = Provider.of<MessagePageProvider>(context, listen: false)
+              .current_user_id;
     await taskProvider.checkInterner();
     var isConnected = taskProvider.isConnected;
     if (isConnected == true) {
       var response = await Dio().post("$baseUrl/task/addTask", data: {
         "title": titleEditingController.text,
         "date": date,
-        "user": "6433cf38a042d150f0966572",
+        "user": userId,
         "color": selectColor,
         "describe": describeEditingController.text.isEmpty
             ? "Không có mô tả"
