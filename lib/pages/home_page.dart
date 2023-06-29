@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
               taskProvider.tasks[i].describe,
               taskProvider.tasks[i].time,
               taskProvider.tasks[i].color,
-              "6433cf38a042d150f0966572",
+              _currentUser.current_user_id,
               i);
         } else if (taskProvider.tasks[i].isUpdate == true) {
           taskProvider.updateTaskServer(taskProvider.tasks[i], i);

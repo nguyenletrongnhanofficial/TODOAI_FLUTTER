@@ -48,12 +48,12 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     if (countOnboarding == false) {
       box.put('countOnboarding', CountApp(countOnboarding: true));
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Future.delayed(Duration(milliseconds: 390), () {
+        Future.delayed(const Duration(milliseconds: 390), () {
           showCupertinoModalBottomSheet(
             expand: false,
             context: context,
             backgroundColor: Colors.transparent,
-            builder: (context) => Onboarding(),
+            builder: (context) => const Onboarding(),
           );
         });
       });
@@ -161,7 +161,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         : MediaQuery.of(context).size.height * 2;
 
     // handle status bar
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       //color set to transperent or set your own color
       statusBarIconBrightness: Brightness.dark,
@@ -188,7 +188,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     clipper: DrawClip(_controller.value),
                     child: Container(
                       height: height * 0.81,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                             begin: Alignment.bottomLeft,
                             end: Alignment.topRight,
@@ -212,7 +212,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   clipper: DrawClip(_controller.value),
                   child: Container(
                     height: height * 0.8,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.bottomLeft,
                           end: Alignment.topRight,
@@ -296,9 +296,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                   textInputAction: TextInputAction.done,
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: Color(0xfff7f8f9),
+                                    fillColor: const Color(0xfff7f8f9),
                                     hintText: 'Số điện thoại',
-                                    hintStyle: TextStyle(
+                                    hintStyle: const TextStyle(
                                       fontFamily: 'TodoAi-Book',
                                       color: Color(0xff616161),
                                     ),
@@ -310,7 +310,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                           25), //<-- ADD THIS
                                     ),
                                   ),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontFamily: 'TodoAi-Book',
                                     color: Colors.black,
                                   ),
@@ -338,9 +338,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                   textInputAction: TextInputAction.done,
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: Color(0xfff7f8f9),
+                                    fillColor: const Color(0xfff7f8f9),
                                     hintText: 'Mật khẩu',
-                                    hintStyle: TextStyle(
+                                    hintStyle: const TextStyle(
                                       fontFamily: 'TodoAi-Book',
                                       color: Color(0xff616161),
                                     ),
@@ -370,7 +370,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                               !isPasswordVisibleOld),
                                     ),
                                   ),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontFamily: 'TodoAi-Book',
                                     color: Colors.black,
                                   ),
@@ -411,7 +411,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 20,
                                               width: 20,
                                               child: CircularProgressIndicator(
@@ -419,7 +419,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                                 strokeWidth: 4,
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 20,
                                             ),
                                             const Text(
@@ -454,7 +454,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Forget_pass()),
+                                    builder: (context) => const Forget_pass()),
                               );
                             },
                             child: const Text(
@@ -467,7 +467,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         // Container(
@@ -490,7 +490,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => SignUp()),
+                                      builder: (context) => const SignUp()),
                                 );
                               },
                               child: const Text(

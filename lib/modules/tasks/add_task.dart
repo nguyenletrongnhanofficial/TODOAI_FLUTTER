@@ -6,6 +6,7 @@ import 'package:todoai_flutter/config/config.dart';
 import 'package:todoai_flutter/models/hives/task.dart';
 import 'package:todoai_flutter/providers/task_provider.dart';
 
+import '../../providers/pages/message_page_provider.dart';
 import 'add_task_classic.dart';
 
 class AddTask extends StatefulWidget {
@@ -64,16 +65,12 @@ class _AddTaskState extends State<AddTask> {
         description = 'Không có mô tả';
       }
       if (time.isEmpty) {
-        time = "";
+        time = " ";
       }
       String date = DateFormat('dd/MM/yyyy')
           .format(DateFormat('dd.MM.yyyy').parse(dateInput));
 
       DateTime dateTime = DateFormat('dd/MM/yyyy').parse(date);
-
-      List<String> timeComponents = time.split(':');
-      int hour = int.parse(timeComponents[0]);
-      int minute = int.parse(timeComponents[1]);
 
       taskProvider
           .addTaskLocal(Task(
@@ -88,8 +85,13 @@ class _AddTaskState extends State<AddTask> {
               isDelete: false))
           .whenComplete(() {
         taskProvider.getAllTaskLocal();
-        taskProvider.registerTask(
-            title, dateTime.month, dateTime.day, hour, minute);
+        if (time != " ") {
+          List<String> timeComponents = time.split(':');
+          int hour = int.parse(timeComponents[0]);
+          int minute = int.parse(timeComponents[1]);
+          taskProvider.registerTask(
+              title, dateTime.month, dateTime.day, hour, minute);
+        }
         taskProvider.homeWidget();
         Navigator.pop(context);
       });
@@ -121,14 +123,16 @@ class _AddTaskState extends State<AddTask> {
     }
     String date = DateFormat('dd/MM/yyyy')
         .format(DateFormat('dd.MM.yyyy').parse(dateInput));
-
+    String userId = Provider.of<MessagePageProvider>(context, listen: false)
+              .current_user_id;
+              
     await taskProvider.checkInterner();
     var isConnected = taskProvider.isConnected;
     if (isConnected == true) {
       var response = await Dio().post("$baseUrl/task/addTask", data: {
         "title": title,
         "date": date,
-        "user": "6433cf38a042d150f0966572",
+        "user": userId,
         "color": selectColor,
         "describe": description,
         "time": time,
