@@ -61,6 +61,7 @@ class _UpdateDeleteTaskState extends State<UpdateDeleteTask> {
               index)
           .whenComplete(() {
         taskProvider.getAllTaskLocal();
+         taskProvider.homeWidget();
         Navigator.pop(context);
       });
     } catch (e) {
@@ -110,6 +111,7 @@ class _UpdateDeleteTaskState extends State<UpdateDeleteTask> {
               index)
           .whenComplete(() {
         taskProvider.getAllTaskLocal();
+         taskProvider.homeWidget();
         Navigator.pop(context);
       });
     } catch (e) {
@@ -411,6 +413,7 @@ class _UpdateDeleteTaskState extends State<UpdateDeleteTask> {
                                   widget.index, taskProvider, widget.task);
                               deleteTaskServer(
                                   widget.index, taskProvider, widget.task);
+                                 
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFFFFEDED),
